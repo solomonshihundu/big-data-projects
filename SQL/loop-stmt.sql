@@ -1,3 +1,4 @@
+-- EXIT WHEN STATEMENT --
 DO 
 $$
 DECLARE
@@ -12,7 +13,7 @@ BEGIN
 END;
 $$;
 
-
+-- WHILE LOOP --
 DO
 $$
 DECLARE
