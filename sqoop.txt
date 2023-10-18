@@ -1,0 +1,25 @@
+************ GETTING STARTED WITH SQOOP (SQL-to-Hadoop) *****************
+*Install Sqoop
+ -sudo wget https://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+ -Extract sqoop - tar xzf sqoop-1.4.7.bin__hadoop-2.6.0.tar.gz
+ -Move contents to new directory sqoop - mv sqoop-1.4.7.bin__hadoop-2.6.0 sqoop
+ 
+ *Edit the .bashrc file to update the environment variable of Apache Sqoop so that it can be    accessed from any directory.
+ 	export SQOOP_HOME=/home/ubuntu/sqoop
+	export PATH=$PATH:$SQOOP_HOME/bin
+	
+ * Run source command to update changes in the same terminal. 
+ 	source .bashrc
+ 	
+* configure the Apache Sqoop environment file
+	~/sqoop/conf/sqoop-env-template.sh
+	
+	edit
+	export HADOOP_COMMON_HOME=$HADOOP_HOME
+	export HADOOP_MAPRED_HOME=$HADOOP_HOME
+* Install database connection driver
+	sudo wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar
+	mv postgresql-42.6.0.jar ./sqoop/lib
+	
+* Check Installation
+	sqoop-version
