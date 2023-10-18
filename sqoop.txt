@@ -23,3 +23,32 @@
 	
 * Check Installation
 	sqoop-version
+	
+###############################################################################################
+* list All DBs
+	sqoop list-databases --connect jdbc:postgresql://localhost:5432/ --password system123 --username demo;
+* list All Tables
+	sqoop list-tables --connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo;
+  import data from postgres into hdfs
+* 	sqoop import --connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo -table customer;
+	## issues ##
+	1)If you have hadoop and sqoop installed with different user:
+	sudo groupadd supergroup
+	sudo usermod -a -G supergroup ubuntu
+	sudo usermod -a -G supergroup hadoop
+	
+	sqoop import "-Dorg.apache.sqoop.splitter.allow_text_splitter=true" --connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo -table customer;
+	
+	* include a destination file in hdfs
+	sqoop import "-Dorg.apache.sqoop.splitter.allow_text_splitter=true" 
+	--connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo -table customer --target-dir /user/ubuntu/bnkcustomer;
+	* include filtering param
+	sqoop import "-Dorg.apache.sqoop.splitter.allow_text_splitter=true" --connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo --table customer --m 3 --where "grade >2" --target-dir /user/ubuntu/bnkcustomer2;
+
+*View Files in HDFS
+	hdfs dfs -ls /user/ubuntu/bnk_customer
+	hdfs dfs -cat /user/ubuntu/bnkcustomer/part*
+	
+* Export Data From HDFS
+	sqoop export "-Dorg.apache.sqoop.splitter.allow_text_splitter=true" --connect jdbc:postgresql://localhost:5432/demo --password system123 --username demo --table bnk_customer --export-dir /user/ubuntu/bnkcustomer2;
+	
