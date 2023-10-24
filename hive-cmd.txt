@@ -1,0 +1,52 @@
+staring Hive CLI: 
+	cd $HIVE_HOME
+	bin/hive
+	
+HIVE COMMANDS:
+
+show databases;  List of all databases in Hive.
+
+	NOTE :If the above commands fails, possible issues and solutions might be:
+	1) Metastore service is offline, then start the service 
+		$ hive --service metastore 
+		
+	2) Configuration issues on below file
+		-- /usr/local/hive/scripts/metastore/upgrade/derby/hive-schema-3.1.0.derby.sql
+		-- comment out the following lines
+		-- CREATE FUNCTION "APP"."NUCLEUS_ASCII"
+		-- CREATE FUNCTION "APP"."NUCLEUS_MATCHES"
+		
+	3) If this is the inital setup or you are running on a test environment, reinstall the derby metastore database
+		-- rm -rf metastore_db/
+		-- bin/schematool -initSchema -dbType derby
+		-- bin/schematool -dbType derby -info
+	4) If its a production site, then backup the metastore_db and run step (3)
+		-- mv metastore_db metastore_db_bkp 
+		
+create database db_name; - Create a db of given name.
+
+drop database db_name; - Drop's empty db.
+
+drop database db_name cascade; - Drop's db plus tables.
+
+use db_name; - Sets db_name as default database, thus we can call a table without referencing the database.
+
+Create and Populate Table from Local csv file.
+-- initializa table
+	>create table employee
+	>(Id INT, Name STRING, Dept STRING, Yoj INT, Salary INT)    	// Schema Info.
+	>row format delimited fields terminated by ','			// Tells the system where a new row stars.
+	>tblproperties ("skip.header.line.count"="1");			// tells system to sjip the first row, as it contains schema info and not actual data.
+	
+	>describe employee;
+	
+-- display all tables
+	> show tables;
+
+-- loading data from local machine
+	> LOAD DATA LOCAL INPATH
+	> '/home/ubuntu/Documents/Solo/SampleData/Employees.csv'
+	> INTO TABLE employee;
+
+
+
